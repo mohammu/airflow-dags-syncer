@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: airflow-dags-config
+data:
+  AWS_ACCOUNT_ID: "771502366784"
+  AWS_CODECOMMIT_URL: https://git-codecommit.us-west-2.amazonaws.com/v1/repos/wotc-airflow-dags
+  AWS_REGION: us-west-2
+  GIT_PULL_INTERVAL: "10"
+  GIT_REPO_DIR: /data/dags
+  GIT_REPO_URL: https://git-codecommit.us-west-2.amazonaws.com/v1/repos/wotc-airflow-dags
+  SQS_QUEUE_NAME: wotc-airflow-sqs

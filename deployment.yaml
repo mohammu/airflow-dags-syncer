@@ -1,0 +1,71 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: airflow-dags-deployment
+spec:
+  selector:
+    matchLabels:
+      app: dags-sync
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        app: dags-sync
+    spec:
+      containers:
+      - name: dags-sync
+        image: 771502366784.dkr.ecr.us-west-2.amazonaws.com/wotc-airflow-dags:latest
+        #command: ["python"]
+        #args: ["run.py"]
+        env:
+        - name: AWS_ACCOUNT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: airflow-dags
+              key: AWS_ACCOUNT_ID
+        - name: AWS_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: airflow-dags
+              key: AWS_REGION
+        - name: AWS_CODECOMMIT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: airflow-dags
+              key: AWS_CODECOMMIT_URL
+        - name: SQS_QUEUE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: airflow-dags
+              key: SQS_QUEUE_NAME
+        - name: GIT_REPO_URL
+          valueFrom:
+            configMapKeyRef:
+              name: airflow-dags
+              key: GIT_REPO_URL
+        - name: GIT_REPO_DIR
+          valueFrom:
+            configMapKeyRef:
+              name: airflow-dags
+              key: GIT_REPO_DIR
+        - name: GIT_PULL_INTERVAL
+          valueFrom:
+            configMapKeyRef:
+              name: airflow-dags
+              key: GIT_PULL_INTERVAL
+
+        volumeMounts:
+        - name: airflow-dags
+          mountPath: /data
+        - name: airflow-dags-secrets
+          mountPath: /root/.aws/credentials
+          subPath: credentials
+          readOnly: true
+
+      volumes:
+      - name: airflow-dags
+        persistentVolumeClaim:
+          claimName: xtof-pv-test-3
+      - name: airflow-dags-secrets
+        secret:
+          secretName: airflow-dags-secrets
