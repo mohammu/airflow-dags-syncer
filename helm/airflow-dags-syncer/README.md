@@ -1,3 +1,9 @@
+# Prerequisites (before setup)
+1. Change secret values (wotc is the project, need to manually change this)
+2. In secrets we need base64 credentials file (ie, ~/.aws/credentials)
+3. In deploy script (see above), rename the script so that we don't accidentally commit 
+4. There is no values-dev file - copy real values into values-dev (values.yaml isn't being used => copy that template into values-dev.yaml)
+
 # Setup
 
 * Initialize Tiller:
