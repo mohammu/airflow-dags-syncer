@@ -6,6 +6,8 @@ namespace: default
 
 replicaCount: 1
 
+# NOTE: The image.repository (if using ECR) will look like the following:
+# ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}
 image:
   repository: myrepo
   tag: stable
