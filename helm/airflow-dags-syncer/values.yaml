@@ -1,0 +1,54 @@
+# Default values for airflow-dags-syncer.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: myrepo
+  tag: stable
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+config:
+  env:
+    AWS_ACCOUNT_ID: "000000000000"
+    AWS_REGION: us-west-2
+    AWS_CODECOMMIT_URL: https://git-codecommit.us-west-2.amazonaws.com/v1/repos/my-repo-name
+    GIT_PULL_INTERVAL: "10"
+    GIT_REPO_DIR: /data/dags
+    GIT_REPO_URL: https://git-codecommit.us-west-2.amazonaws.com/v1/repos/my-repo-name
+    SQS_QUEUE_NAME: my-sqs-queue-name
+    DAGS_DIR: /usr/local/airflow/dags
+
+  files:
+    config: |-
+      [default]
+      region = us-west-2
+    .gitconfig: |-
+      [credential]
+        helper = !aws codecommit credential-helper $@
+        UseHttpPath = true
+
+volumes:
+  PvcClaimName: my-pvc-volume
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
