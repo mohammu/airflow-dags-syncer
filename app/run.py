@@ -2,6 +2,7 @@ import os
 import time
 #import git
 import subprocess
+from distutils.dir_util import copy_tree
 from datetime import datetime
 from sqs_listener import SqsListener
 
@@ -10,12 +11,13 @@ SQS_QUEUE_NAME = os.getenv('SQS_QUEUE_NAME', "")
 GIT_REPO_URL = os.getenv('GIT_REPO_URL', "")
 GIT_REPO_DIR = os.getenv('GIT_REPO_DIR', "")
 GIT_PULL_INTERVAL = os.getenv('GIT_PULL_INTERVAL', "")
+DAGS_DIR = os.getenv('DAGS_DIR', "")
 
 
 def git_config():
     output = subprocess.check_output(
         ["git", "config", "--global", "credential.helper",
-         "aws codecommit credential-helper $@"])
+         "'aws codecommit credential-helper $@'"])
     print("[%s] %s" % (datetime.now().isoformat(),
                        output.decode('utf-8').strip('\n')))
     output = subprocess.check_output(
@@ -47,6 +49,7 @@ class MyListener(SqsListener):
         if body:
             print("[%s] %s" % (datetime.now().isoformat(), body))
             git_pull(GIT_REPO_DIR)
+            copy_tree(GIT_REPO_DIR, DAGS_DIR)
             print("[%s] GIT PULL COMPLETE" % datetime.now().isoformat())
 
 

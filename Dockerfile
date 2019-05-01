@@ -11,8 +11,6 @@ RUN apt-get update -y \
     && pip install -U pip setuptools wheel awscli boto3 \
     && mkdir -p /root/.aws /app /data
 
-COPY aws-config /root/.aws/config
-COPY gitconfig /root/.gitconfig
 COPY app /app/
 WORKDIR /app
 
