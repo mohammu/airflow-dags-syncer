@@ -2,6 +2,7 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: {{ template "airflow-dags-syncer.fullname" . }}
+  namespace: {{ .Values.namespace }}
   labels:
     app: {{ template "airflow-dags-syncer.name" . }}
     chart: {{ template "airflow-dags-syncer.chart" . }}
@@ -30,99 +31,91 @@ spec:
           - name: AWS_ACCOUNT_ID
             valueFrom:
               configMapKeyRef:
-                name: {{ template "airflow-dags-syncer.fullname" . }}-config-env
+                name: {{ template "airflow-dags-syncer.fullname" . }}-config-envs
                 key: AWS_ACCOUNT_ID
           - name: AWS_REGION
             valueFrom:
               configMapKeyRef:
-                name: {{ template "airflow-dags-syncer.fullname" . }}-config-env
+                name: {{ template "airflow-dags-syncer.fullname" . }}-config-envs
                 key: AWS_REGION
           - name: AWS_CODECOMMIT_URL
             valueFrom:
               configMapKeyRef:
-                name: {{ template "airflow-dags-syncer.fullname" . }}-config-env
+                name: {{ template "airflow-dags-syncer.fullname" . }}-config-envs
                 key: AWS_CODECOMMIT_URL
           - name: SQS_QUEUE_NAME
             valueFrom:
               configMapKeyRef:
-                name: {{ template "airflow-dags-syncer.fullname" . }}-config-env
+                name: {{ template "airflow-dags-syncer.fullname" . }}-config-envs
                 key: SQS_QUEUE_NAME
           - name: GIT_REPO_URL
             valueFrom:
               configMapKeyRef:
-                name: {{ template "airflow-dags-syncer.fullname" . }}-config-env
+                name: {{ template "airflow-dags-syncer.fullname" . }}-config-envs
                 key: GIT_REPO_URL
           - name: GIT_REPO_DIR
             valueFrom:
               configMapKeyRef:
-                name: {{ template "airflow-dags-syncer.fullname" . }}-config-env
+                name: {{ template "airflow-dags-syncer.fullname" . }}-config-envs
                 key: GIT_REPO_DIR
           - name: GIT_PULL_INTERVAL
             valueFrom:
               configMapKeyRef:
-                name: {{ template "airflow-dags-syncer.fullname" . }}-config-env
+                name: {{ template "airflow-dags-syncer.fullname" . }}-config-envs
                 key: GIT_PULL_INTERVAL
           - name: DAGS_DIR
             valueFrom:
               configMapKeyRef:
-                name: {{ template "airflow-dags-syncer.fullname" . }}-config-env
+                name: {{ template "airflow-dags-syncer.fullname" . }}-config-envs
                 key: DAGS_DIR
 
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-
-        volumeMounts:
-        - name: airflow-dags-dir
-          mountPath: /usr/local/airflow/dags
-        - name: {{ template "airflow-dags-syncer.fullname" . }}-secrets
-          mountPath: /root/.aws/credentials
-          subPath: credentials
-          readOnly: true
-        - name: aws-config
-          mountPath: /root/.aws/config
-          subPath: config
-        - name: gitconfig
-          mountPath: /root/.gitconfig
-          subPath: .gitconfig
+          volumeMounts:
+          - name: airflow-dags-dir
+            mountPath: /usr/local/airflow/dags
+          - name: {{ template "airflow-dags-syncer.fullname" . }}-secrets
+            mountPath: /root/.aws/credentials
+            subPath: credentials
+            readOnly: true
+          - name: aws-config
+            mountPath: /root/.aws/config
+            subPath: config
+          - name: gitconfig
+            mountPath: /root/.gitconfig
+            subPath: .gitconfig
 
       volumes:
-      - name: airflow-dags-dir
-        persistentVolumeClaim:
-          #claimName: xtof-pv-test-3
-          claimName: {{ .Values.PvcClaimName }}
-      - name: {{ template "airflow-dags-syncer.fullname" . }}-secrets
-        secret:
-          secretName: {{ template "airflow-dags-syncer.fullname" . }}-secrets
-      - name: aws-config
-        configMap:
-          name: {{ template "airflow-dags-syncer.fullname" . }}-config-files
-          items:
-          - key: config
-            path: config
-      - name: gitconfig
-        configMap:
-          name: {{ template "airflow-dags-syncer.fullname" . }}-config-files
-          items:
-          - key: .gitconfig
-            path: .gitconfig
+        - name: airflow-dags-dir
+          persistentVolumeClaim:
+            claimName: {{ .Values.volumes.PvcClaimName }}
+        - name: {{ template "airflow-dags-syncer.fullname" . }}-secrets
+          secret:
+            secretName: {{ template "airflow-dags-syncer.fullname" . }}-secrets
+        - name: aws-config
+          configMap:
+            name: {{ template "airflow-dags-syncer.fullname" . }}-config-files
+            items:
+            - key: config
+              path: config
+        - name: gitconfig
+          configMap:
+            name: {{ template "airflow-dags-syncer.fullname" . }}-config-files
+            items:
+            - key: .gitconfig
+              path: .gitconfig
 
-          resources:
+{{- /*
+      resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
-      nodeSelector:
+        nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
     {{- with .Values.affinity }}
-      affinity:
+        affinity:
 {{ toYaml . | indent 8 }}
     {{- end }}
     {{- with .Values.tolerations }}
-      tolerations:
+        tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}
+*/ -}}
