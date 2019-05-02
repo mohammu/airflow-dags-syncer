@@ -15,6 +15,11 @@ data:
   credentials: <base64 encoded aws credentials file>
 ```
 
+* Create the AWS credentials K8s Secret:
+```
+$ kubectl create -f local-secret-aws-credentials.yaml
+```
+
 * Make changes to the Helm Chart deploy helper script:
 ```
 $ cp deploy-helm-chart.sh local-deploy-helm-chart.sh
