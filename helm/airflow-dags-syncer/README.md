@@ -18,7 +18,7 @@ data:
 * Make changes to the Helm Chart deploy helper script:
 ```
 $ cp deploy-helm-chart.sh local-deploy-helm-chart.sh
-$ cat
+$ cat local-deploy-helm-chart.sh
 #!/bin/bash
 export PROJECT=wotc  # aka "envrionment" (e.g., dev, stage, prod)
 export AWS_ACCOUNT_ID=000000000000
