@@ -1,5 +1,5 @@
 questions:
-- variable:
+- variable: image
   description: "Location of Docker image to use in Deployment"
   default: "my-repo"
   type: string
