@@ -1,15 +1,19 @@
 questions:
-- variable: image
-  description: "Location of Docker image to use in Deployment"
-  default: "my-repo"
-  type: string
-  required: true
-  label: Docker image repo
-  group: "Image Settings"
-  show_subquestion_if: true
+- variable: defaultImage
+  default: "true"
+  description: "Use default Airflow DAGs syncer image or specify a custom one"
+  label: Use Default Airflow DAGs Syncer Image
+  type: boolean
+  show_subquestion_if: false
+  group: "Container Images"
   subquestions:
-  - variable: tag
-    default: latest
-    description: "Image tag"
+  - variable: image.repository
+    default: "my-repo"
+    description: "Airflow DAGs Syncer image name"
     type: string
-    label: Image tag
+    label: Airflow DAGs Syncer Image Name
+  - variable: image.tag
+    default: "latest"
+    description: "Airflow DAGs Syncer Image Tag"
+    type: string
+    label: Airflow DAGs Syncer Image Tag
