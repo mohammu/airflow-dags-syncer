@@ -19,7 +19,7 @@ questions:
     label: Airflow DAGs Syncer Image Tag
 
 - variable: config.AwsAccountId
-  default: ""
+  default: "0000"
   description: "Enter your AWS Account ID"
   label: AWS Account ID
   type: string
