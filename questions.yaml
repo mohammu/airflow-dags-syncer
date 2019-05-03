@@ -1,7 +1,3 @@
-categories:
-- image
-- config
-- volumes
 questions:
 - variable:
   description: "Location of Docker image to use in Deployment"
@@ -9,3 +5,4 @@ questions:
   type: string
   required: true
   label: Docker image repo
+  group: "Image Settings"
