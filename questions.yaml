@@ -1,3 +1,7 @@
+categories:
+- image
+- config
+- volumes
 questions:
 - variable: image
   description: "Location of Docker image to use in Deployment"
@@ -6,3 +10,10 @@ questions:
   required: true
   label: Docker image repo
   group: "Image Settings"
+  show_subquestion_if: true
+  subquestions:
+  - variable: tag
+    default: latest
+    description: "Image tag"
+    type: string
+    label: Image tag
