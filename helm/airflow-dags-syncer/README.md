@@ -1,9 +1,11 @@
-# Prerequisites (before setup)
+# Pre-deploy
+
+Before you deploy the Helm Chart, perform the following steps:
 
 * Create your Kubernetes Secrets manifest (this YAML stores your AWS credentials, so do _not_ commit these to the repository):
 ```
-$ cp secret-aws-credentials-template.yaml local-secret-aws-credentials.yaml
-$ cat local-secret-aws-credentials.yaml
+$ cp secret-aws-credentials-template.yaml wotc-secret-aws-credentials.yaml
+$ cat wotc-secret-aws-credentials.yaml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -17,13 +19,13 @@ data:
 
 * Create the AWS credentials K8s Secret:
 ```
-$ kubectl create -f local-secret-aws-credentials.yaml
+$ kubectl create -f wotc-secret-aws-credentials.yaml
 ```
 
 * Make changes to the Helm Chart deploy helper script:
 ```
-$ cp deploy-helm-chart.sh local-deploy-helm-chart.sh
-$ cat local-deploy-helm-chart.sh
+$ cp deploy-helm-chart.sh wotc-deploy-helm-chart.sh
+$ cat wotc-deploy-helm-chart.sh
 #!/bin/bash
 export PROJECT=wotc  # aka "envrionment" (e.g., dev, stage, prod)
 export AWS_ACCOUNT_ID=000000000000
@@ -80,4 +82,16 @@ helm upgrade --install ${PROJECT} . \
 * Deploy the Helm Chart:
 ```
 $ ./deploy-helm-chart.sh
+```
+
+* If all goes well, you should see the status as "`DEPLOYED`":
+```
+$ helm ls
+NAME  REVISION  UPDATED                   STATUS    CHART                      NAMESPACE
+wotc  1       	Wed May  1 15:52:13 2019  DEPLOYED  airflow-dags-syncer-0.1.0  default
+```
+
+* Should anything go wrong with a deploy, you can delete the deploy and start again:
+```
+$ helm delete <project-name> --purge
 ```
