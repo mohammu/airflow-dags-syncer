@@ -17,10 +17,10 @@ questions:
     description: "Airflow DAGs Syncer Image Tag"
     type: string
     label: Airflow DAGs Syncer Image Tag
-- variable: config.AwsAccountId
-  default: ""
-  description: "Enter your AWS Account ID"
-  label: AWS Account ID
-  type: string
-  required: true
-  group: "Syncer Config"
+#- variable: config.AwsAccountId
+#  default: ""
+#  description: "Enter your AWS Account ID"
+#  label: AWS Account ID
+#  type: string
+#  required: true
+#  group: "Syncer Config"
