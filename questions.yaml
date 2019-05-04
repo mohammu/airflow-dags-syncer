@@ -25,18 +25,19 @@ questions:
   type: int
   required: true
   group: "Syncer Config"
-- variable: config.env.AWS_REGION
-  default: "us-west-2"
-  description: "Enter your AWS Region"
-  label: AWS Region
-  type: string
-  required: true
-  group: "Syncer Config"
 
-- variable: volumes.PvcClaimName
-  default: "my-pvc-claim-name"
-  description: "Enter your PVC Claim Name"
-  label: PVC Claim Name
-  type: string
-  required: true
-  group: "Volumes"
+#- variable: config.env.AWS_REGION
+#  default: "us-west-2"
+#  description: "Enter your AWS Region"
+#  label: AWS Region
+#  type: string
+#  required: true
+#  group: "Syncer Config"
+#
+#- variable: volumes.PvcClaimName
+#  default: "my-pvc-claim-name"
+#  description: "Enter your PVC Claim Name"
+#  label: PVC Claim Name
+#  type: string
+#  required: true
+#  group: "Volumes"
