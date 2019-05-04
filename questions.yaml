@@ -25,3 +25,10 @@ questions:
   type: int
   required: true
   group: "Syncer Config"
+- variable: config.env.AWS_REGION
+  default: "us-west-2"
+  description: "Enter your AWS Region"
+  label: AWS Region
+  type: string
+  required: true
+  group: "Syncer Config"
