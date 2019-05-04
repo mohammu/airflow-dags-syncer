@@ -18,10 +18,10 @@ questions:
     type: string
     label: Airflow DAGs Syncer Image Tag
 
-- variable: config.AwsAccountId
-  default: "0000"
+- variable: config.env.AWS_ACCOUNT_ID
+  default: "000000000000"
   description: "Enter your AWS Account ID"
   label: AWS Account ID
-  type: string
+  type: int
   required: true
   group: "Syncer Config"
