@@ -2,7 +2,8 @@ import os
 import time
 #import git
 import subprocess
-from distutils.dir_util import copy_tree
+from dirsync import sync
+#from distutils.dir_util import copy_tree
 from datetime import datetime
 from sqs_listener import SqsListener
 
@@ -49,7 +50,8 @@ class MyListener(SqsListener):
         if body:
             print("[%s] %s" % (datetime.now().isoformat(), body))
             git_pull(GIT_REPO_DIR)
-            copy_tree(GIT_REPO_DIR, DAGS_DIR)
+            #copy_tree(GIT_REPO_DIR, DAGS_DIR)
+            sync(GIT_REPO_DIR, DAGS_DIR, "sync", purge = True)
             print("[%s] GIT PULL COMPLETE" % datetime.now().isoformat())
 
 
